@@ -1,5 +1,4 @@
 import { IsEmail, IsNotEmpty, IsStrongPassword } from 'class-validator';
-import { Roles } from '../user.helpers';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -13,7 +12,4 @@ export class CreateUserDto {
 
   @IsStrongPassword()
   password: string;
-
-  @IsNotEmpty()
-  role: Roles;
 }

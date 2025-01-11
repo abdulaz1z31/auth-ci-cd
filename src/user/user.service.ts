@@ -21,7 +21,7 @@ export class UserService {
 
   async findOne(id: number): Promise<User> {
     const user = await this.userRepositry.findOneBy({ id });
-    if (Object.keys(user).length == 0) {
+    if (!user) {
       throw new BadRequestException('User not found');
     }
     return user;
@@ -29,7 +29,7 @@ export class UserService {
 
   async findByEmail(email: string): Promise<User> {
     const user = await this.userRepositry.findOneBy({ email });
-    if (Object.keys(user).length == 0) {
+    if (!user) {
       throw new BadRequestException('User not found');
     }
     return user;
@@ -40,7 +40,7 @@ export class UserService {
     updateUserDto: UpdateUserDto,
   ): Promise<updateUserType> {
     const user = await this.userRepositry.findOneBy({ id });
-    if (Object.keys(user).length == 0) {
+    if (!user) {
       throw new BadRequestException('User not found');
     }
     await this.userRepositry.update(id, updateUserDto);
@@ -53,9 +53,25 @@ export class UserService {
 
   async remove(id: number): Promise<deleteUser> {
     const user = await this.userRepositry.findOneBy({ id });
-    if (Object.keys(user).length == 0) {
+    if (!user) {
       throw new BadRequestException('User not found');
     }
     return { message: 'deleted' };
+  }
+
+  async chechByEmail(email: string): Promise<boolean> {
+    const user = await this.userRepositry.findOneBy({ email });
+    if (!user) {
+      return true;
+    }
+    return false;
+  }
+
+  async chechByUsername(username: string): Promise<boolean> {
+    const user = await this.userRepositry.findOneBy({ username });
+    if (!user) {
+      return true;
+    }
+    return false;
   }
 }
