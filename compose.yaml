@@ -1,0 +1,36 @@
+services:
+  app-auth:
+    build:
+      context: .
+    container_name: auth-app
+    env_file:
+      - .env
+    volumes:
+      - .:/docker-auth
+    depends_on:
+      - postgres-auth
+    ports:
+      - "3000:3000"
+    networks:
+      - auth_network
+      
+  postgres-auth:
+    image: postgres
+    container_name: auth-app-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_NAME: postgres
+    networks:
+      - auth_network
+    ports:
+      - "5433:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+
+networks:
+  auth_network:
+    driver: bridge
