@@ -1,39 +1,40 @@
-services:
-  postgres:
-    image: postgres
-    container_name: auth-app-db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: postgres
-    networks:
-      - auth_network
-    ports:
-      - '5436:5432'
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    restart: unless-stopped
+version: '3.8'
 
+services:
   app:
-    container_name: auth-app
-    build:
-      context: .
+    image: abdulaziz111/my-app:latest
+    container_name: myapp
+    ports:
+      - '3000:3000'
     env_file:
       - .env
     depends_on:
       - postgres
-    networks:
-      - auth_network
     volumes:
       - .:/usr/src/app
-      - /usr/src/app/node_modules
-    ports:
-      - '3000:3000'
-    restart: unless-stopped
-    command: npm run start
+    restart: always
+    networks:
+      - app-network
 
-networks:
-  auth_network:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    restart: always
+    networks:
+      - app-network
 
 volumes:
-  db_data:
+  postgres_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
