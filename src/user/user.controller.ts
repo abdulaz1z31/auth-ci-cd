@@ -20,6 +20,11 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @Get('/test')
+  test() {
+    return { message: 'server is working' };
+  }
+
   @Get()
   findAll() {
     return this.userService.findAll();
