@@ -16,8 +16,8 @@ import { EnvModule } from './config/config.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // This makes ConfigModule available globally
-      envFilePath: '../.env', // Specify the path to your .env file (optional)
+      isGlobal: true,
+      envFilePath: '../.env',
     }),
     EnvModule,
     UserModule,
